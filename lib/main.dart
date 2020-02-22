@@ -26,7 +26,6 @@ class MyApp extends StatelessWidget {
 }
 
 class DiscussionPage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<DiscussionProvider>(context, listen: false);
@@ -62,16 +61,16 @@ class DiscussionPage extends StatelessWidget {
 //          List<Comment> comments = json.decode(response).map((x)=>Comment.fromJson(x))  ;
             List<Comment> comments = List<Comment>.from(
                 json.decode(response).map((x) => Comment.fromJson(x)));
-comments.sort((a,b)=>b.creationTime.compareTo(a.creationTime));
+            comments.sort((a, b) => b.creationTime.compareTo(a.creationTime));
             return Card(
               child: Scrollbar(
                 child: ListView.builder(
-
                     itemCount: comments.length,
                     itemBuilder: (context, index) {
-                      if(comments[index].isParent)
-                      return PostItem(comments[index]);
-                      else return Container();
+                      if (comments[index].isParent)
+                        return PostItem(comments[index]);
+                      else
+                        return Container();
                     }),
               ),
             );
@@ -85,9 +84,7 @@ comments.sort((a,b)=>b.creationTime.compareTo(a.creationTime));
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-
- provider.showBottomMessage(context: context);
-
+          provider.showBottomMessage(context: context);
         },
         child: Icon(Icons.add),
       ),
