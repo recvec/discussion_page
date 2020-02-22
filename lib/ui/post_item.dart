@@ -17,13 +17,11 @@ class PostItem extends StatelessWidget {
             Text("+100"),
             IconButton(
               icon: Icon(Icons.arrow_upward),
-              onPressed: (){},
-
+              onPressed: () {},
             ),
             IconButton(
               icon: Icon(Icons.arrow_downward),
-              onPressed: (){},
-
+              onPressed: () {},
             ),
             Text("Igor"),
             Text("20.02.2020")
@@ -35,18 +33,18 @@ class PostItem extends StatelessWidget {
           children: <Widget>[
             FlatButton(
               child: Text("Коментувати"),
-              onPressed: (){},
-
+              onPressed: () {},
             ),
             IconButton(
               icon: Icon(Icons.delete),
-              onPressed: (){},
-
+              onPressed: () {},
             ),
           ],
         ),
         if (index == 0)
-          Padding(padding: const EdgeInsets.only(left: 40), child: PostItem(1))
+          Padding(padding: const EdgeInsets.only(left: 40),
+              child: PostItem(1))
+
       ],
     );
   }

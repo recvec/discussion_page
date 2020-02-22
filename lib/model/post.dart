@@ -5,4 +5,6 @@ class Post {
   String date;
   int state;
 
+  Post(this.text, this.author, this.date, this.state);
+
 }
