@@ -1,16 +1,17 @@
 import 'package:discussion_page/model/comment.dart';
 import 'package:discussion_page/provider/discussion_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class PostItem extends StatelessWidget {
-Comment comment;
-
+  Comment comment;
+  final f = new DateFormat('dd-MM-yyyy hh:mm:ss');
   PostItem(this.comment);
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<DiscussionProvider>(context,listen: false);
+    final provider = Provider.of<DiscussionProvider>(context, listen: false);
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -33,17 +34,16 @@ Comment comment;
               },
             ),
             Text(comment.authorName),
-            Text(comment.creationTime)
+            Text(f.format(DateTime.parse(comment.creationTime)))
           ],
         ),
-        Text(
-            comment.text),
+        Text(comment.text),
         Row(
           children: <Widget>[
             FlatButton(
               child: Text("Сomment"),
               onPressed: () {
-
+                provider.showBottomMessage(context: context, id: comment.id);
               },
             ),
             IconButton(
@@ -54,10 +54,18 @@ Comment comment;
             ),
           ],
         ),
-//        if (index == 0)
-//          Padding(padding: const EdgeInsets.only(left: 40),
-//              child: PostItem(1))
+         Padding(
+           padding: const EdgeInsets.only(left: 30),
+           child: ListView.builder(
 
+               physics: ClampingScrollPhysics(),
+               shrinkWrap: true,
+              itemCount: comment.nestedComments.length,
+              itemBuilder: (context, index) {
+                 comment.nestedComments.sort((a,b)=>b.creationTime.compareTo(a.creationTime));
+                return PostItem(comment.nestedComments[index]);
+              }),
+         ),
       ],
     );
   }

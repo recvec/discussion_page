@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:discussion_page/model/comment.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 import 'package:web_socket_channel/html.dart';
 
 const addCommentCommand = "add_comment";
@@ -22,17 +23,67 @@ TextEditingController authorFieldController;
 
 TextEditingController textFieldController ;
 
- addComment(BuildContext context){
+  DiscussionProvider(){
+    channel = HtmlWebSocketChannel.connect("ws://localhost:37777");
+    channelStream = channel.stream.asBroadcastStream();
+    authorFieldController = TextEditingController();
+    textFieldController = TextEditingController();
+    print("channel inited");
+  }
+
+
+  showBottomMessage({@required BuildContext context,String id}){
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Form(
+              key: formKey,
+              child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: <Widget>[
+                TextFormField(
+                  decoration: const InputDecoration(
+                    icon: Icon(Icons.person),
+                    hintText: 'Enter your name here',
+                    labelText: "Author",
+                  ),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please enter some text';
+                    }
+                    return null;
+                  },controller: authorFieldController,
+                ),
+                TextFormField(maxLines: 8,
+                  decoration: const InputDecoration(
+                    hintText: 'Enter your comment here',
+//                          labelText: "Comment",
+                  ),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please enter some text';
+                    }
+                    return null;
+                  },controller: textFieldController,
+                ),
+                RaisedButton(
+                  onPressed: () {
+                    _addComment(context: context,id: id);
+                  },
+                  child: Text("Comment"),
+                )
+              ]));
+        });
+  }
+ _addComment({@required BuildContext context,String id}){
    if (formKey.currentState.validate()) {
 
      var newComment = json.encode(Comment(
-         id: Random().nextInt(53333).toString(),
+         id: Uuid().v4().toString(),
          authorName: authorFieldController.text,
-         creationTime: DateFormat('kk:mm:ss EEE d MMM').format(DateTime.now()),
-         text: textFieldController.text,)
+         creationTime: DateTime.now().toString(),
+         text: textFieldController.text,isParent: id==null)
          .toJson());
-
-     channel.sink.add(addCommentCommand + splitter + newComment);
+    var message = addCommentCommand + splitter + newComment + ((id==null)?"":splitter+id);
+     channel.sink.add(message);
      print("addComment: Sended");
      Navigator.of(context).pop();
    }
@@ -55,13 +106,6 @@ likeComment(String id){
    channel.sink.add(updateCommentCommand + splitter + id + splitter + text);
    print("updateComment: Sended");
  }
-  DiscussionProvider(){
-    channel = HtmlWebSocketChannel.connect("ws://localhost:37777");
-    channelStream = channel.stream.asBroadcastStream();
-    authorFieldController = TextEditingController();
-    textFieldController = TextEditingController();
-    print("channel inited");
-  }
 
 
 

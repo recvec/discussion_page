@@ -27,6 +27,7 @@ dependencies:
   web_socket_channel: ^1.1.0
   json_annotation: ^3.0.1
   intl: 0.16.1
+  uuid:
 dev_dependencies:
   flutter_test:
     sdk: flutter

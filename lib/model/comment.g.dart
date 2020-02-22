@@ -12,6 +12,7 @@ Comment _$CommentFromJson(Map<String, dynamic> json) {
     authorName: json['authorName'] as String,
     text: json['text'] as String,
     creationTime: json['creationTime'] as String,
+    isParent: json['isParent'] as bool,
     state: json['state'] as int,
     nestedComments: (json['nestedComments'] as List)
         ?.map((e) =>
@@ -25,6 +26,7 @@ Map<String, dynamic> _$CommentToJson(Comment instance) => <String, dynamic>{
       'authorName': instance.authorName,
       'text': instance.text,
       'creationTime': instance.creationTime,
+      'isParent': instance.isParent,
       'state': instance.state,
       'nestedComments': instance.nestedComments,
     };

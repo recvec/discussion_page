@@ -62,14 +62,16 @@ class DiscussionPage extends StatelessWidget {
 //          List<Comment> comments = json.decode(response).map((x)=>Comment.fromJson(x))  ;
             List<Comment> comments = List<Comment>.from(
                 json.decode(response).map((x) => Comment.fromJson(x)));
-
+comments.sort((a,b)=>b.creationTime.compareTo(a.creationTime));
             return Card(
               child: Scrollbar(
                 child: ListView.builder(
 
                     itemCount: comments.length,
                     itemBuilder: (context, index) {
+                      if(comments[index].isParent)
                       return PostItem(comments[index]);
+                      else return Container();
                     }),
               ),
             );
@@ -84,46 +86,8 @@ class DiscussionPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
 
+ provider.showBottomMessage(context: context);
 
-          showModalBottomSheet(
-              context: context,
-              builder: (context) {
-                return Form(
-                    key: provider.formKey,
-                    child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: <Widget>[
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          icon: Icon(Icons.person),
-                          hintText: 'Enter your name here',
-                          labelText: "Author",
-                        ),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Please enter some text';
-                          }
-                          return null;
-                        },controller: provider.authorFieldController,
-                      ),
-                      TextFormField(maxLines: 8,
-                        decoration: const InputDecoration(
-                          hintText: 'Enter your comment here',
-//                          labelText: "Comment",
-                        ),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Please enter some text';
-                          }
-                          return null;
-                        },controller: provider.textFieldController,
-                      ),
-                      RaisedButton(
-                        onPressed: () {
-                      provider.addComment(context);
-                        },
-                        child: Text("Comment"),
-                      )
-                    ]));
-              });
         },
         child: Icon(Icons.add),
       ),
