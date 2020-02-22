@@ -1,11 +1,8 @@
 import 'dart:convert';
-import 'dart:math';
-
 import 'package:discussion_page/provider/discussion_provider.dart';
 import 'package:discussion_page/ui/post_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 import 'model/comment.dart';
 
 void main() => runApp(MyApp());
@@ -80,7 +77,7 @@ class DiscussionPage extends StatelessWidget {
         },
       ),
       bottomNavigationBar: BottomAppBar(
-        child: Text("2020"),
+        child: SizedBox(height: 60,child: Center(child: Text("2020 - recvec"))),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
