@@ -12,7 +12,7 @@ class Comment   {
   int state;
   List<Comment> nestedComments;
 
-  Comment({@required this.id, @required this.authorName, @required this.text, @required this.creationTime, this.state,
+  Comment({@required this.id, @required this.authorName, @required this.text, @required this.creationTime, this.state=0,
       this.nestedComments});
   factory Comment.fromJson(Map<String, dynamic> json) => _$CommentFromJson(json);
   Map<String, dynamic> toJson() => _$CommentToJson(this);

@@ -5,9 +5,8 @@ import 'package:discussion_page/provider/discussion_provider.dart';
 import 'package:discussion_page/ui/post_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:intl/intl.dart';
 import 'model/comment.dart';
-import 'model/post.dart';
 
 void main() => runApp(MyApp());
 
@@ -27,7 +26,6 @@ class MyApp extends StatelessWidget {
 }
 
 class DiscussionPage extends StatelessWidget {
-  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -85,55 +83,47 @@ class DiscussionPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          provider.channel.sink.add(json.encode(Comment(
-                  id: Random().nextInt(53333).toString(),
-                  authorName: Random().nextBool().toString(),
-                  creationTime: Random().nextInt(99999).toString(),
-                  text: "Loreum lorum lorium ${Random().nextInt(555)}")
-              .toJson()));
-          print("Sended");
-//          showModalBottomSheet(
-//              context: context,
-//              builder: (context) {
-//                return Form(
-//                    key: _formKey,
-//                    child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: <Widget>[
-//                      TextFormField(
-//                        decoration: const InputDecoration(
-//                          icon: Icon(Icons.person),
-//                          hintText: 'Enter your name here',
-//                          labelText: "Author",
-//                        ),
-//                        validator: (value) {
-//                          if (value.isEmpty) {
-//                            return 'Please enter some text';
-//                          }
-//                          return null;
-//                        },
-//                      ),
-//                      TextFormField(maxLines: 8,
-//                        decoration: const InputDecoration(
-//                          hintText: 'Enter your comment here',
-////                          labelText: "Comment",
-//                        ),
-//                        validator: (value) {
-//                          if (value.isEmpty) {
-//                            return 'Please enter some text';
-//                          }
-//                          return null;
-//                        },
-//                      ),
-//                      RaisedButton(
-//                        onPressed: () {
-////                          if (_formKey.currentState.validate()) {
-////                            print("Sended");
-////                          }
-//
-//                        },
-//                        child: Text("Comment"),
-//                      )
-//                    ]));
-//              });
+
+
+          showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                return Form(
+                    key: provider.formKey,
+                    child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: <Widget>[
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          icon: Icon(Icons.person),
+                          hintText: 'Enter your name here',
+                          labelText: "Author",
+                        ),
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Please enter some text';
+                          }
+                          return null;
+                        },controller: provider.authorFieldController,
+                      ),
+                      TextFormField(maxLines: 8,
+                        decoration: const InputDecoration(
+                          hintText: 'Enter your comment here',
+//                          labelText: "Comment",
+                        ),
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Please enter some text';
+                          }
+                          return null;
+                        },controller: provider.textFieldController,
+                      ),
+                      RaisedButton(
+                        onPressed: () {
+                      provider.addComment(context);
+                        },
+                        child: Text("Comment"),
+                      )
+                    ]));
+              });
         },
         child: Icon(Icons.add),
       ),

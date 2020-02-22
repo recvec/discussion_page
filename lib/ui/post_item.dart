@@ -1,5 +1,7 @@
 import 'package:discussion_page/model/comment.dart';
+import 'package:discussion_page/provider/discussion_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PostItem extends StatelessWidget {
 Comment comment;
@@ -8,6 +10,8 @@ Comment comment;
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<DiscussionProvider>(context,listen: false);
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -18,11 +22,15 @@ Comment comment;
             Text(comment.state.toString()),
             IconButton(
               icon: Icon(Icons.arrow_upward),
-              onPressed: () {},
+              onPressed: () {
+                provider.likeComment(comment.id);
+              },
             ),
             IconButton(
               icon: Icon(Icons.arrow_downward),
-              onPressed: () {},
+              onPressed: () {
+                provider.dislikeComment(comment.id);
+              },
             ),
             Text(comment.authorName),
             Text(comment.creationTime)
@@ -34,11 +42,15 @@ Comment comment;
           children: <Widget>[
             FlatButton(
               child: Text("Сomment"),
-              onPressed: () {},
+              onPressed: () {
+
+              },
             ),
             IconButton(
               icon: Icon(Icons.delete),
-              onPressed: () {},
+              onPressed: () {
+                provider.deleteComment(comment.id);
+              },
             ),
           ],
         ),
