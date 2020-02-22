@@ -1,5 +1,6 @@
-class Post {
 
+
+class Post {
   String text;
   String author;
   String date;

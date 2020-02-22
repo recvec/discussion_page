@@ -1,8 +1,12 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:discussion_page/provider/discussion_provider.dart';
 import 'package:discussion_page/ui/post_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'model/comment.dart';
 import 'model/post.dart';
 
 void main() => runApp(MyApp());
@@ -40,7 +44,10 @@ class DiscussionPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          provider.channel.sink.add(Post("sd","ds","ds",43));
+          provider.channel.sink.add(json.encode(Comment(id: Random().nextInt(53333).toString(),
+              authorName: Random().nextBool().toString(),
+              creationTime: Random().nextInt(99999).toString(),
+              text: "Loreum lorum lorium ${Random().nextInt(555)}").toJson()));
           print("Sended");
 //          showModalBottomSheet(
 //              context: context,
