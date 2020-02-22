@@ -64,12 +64,6 @@ class PostItem extends StatelessWidget {
                   provider.showBottomMessage(context: context, id: comment.id);
                 },
               ),
-              IconButton(
-                icon: Icon(Icons.delete),
-                onPressed: () {
-                  provider.deleteComment(comment.id);
-                },
-              ),
               ValueListenableBuilder<bool>(
                   valueListenable: _isEditMode,
                   builder: (context, data, _) => data
@@ -87,6 +81,12 @@ class PostItem extends StatelessWidget {
                             _isEditMode.value = true;
                           },
                         )),
+              IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {
+                  provider.deleteComment(comment.id);
+                },
+              ),
             ],
           ),
           Padding(
