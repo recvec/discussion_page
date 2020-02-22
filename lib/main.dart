@@ -34,34 +34,50 @@ class DiscussionPage extends StatelessWidget {
     final provider = Provider.of<DiscussionProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Space comments 5"),
-      ),
+          title: Row(
+        children: <Widget>[
+          StreamBuilder(
+            stream: provider.channelStream,
+            builder: (context, snapshot) {
+              var response = snapshot.data;
+              var count;
+              if (response == null) {
+                count = 0;
+              } else {
+                count = List.from(json.decode(response)).length;
+              }
+              return Text(count.toString());
+            },
+          ),
+          SizedBox(
+            width: 40,
+          ),
+          Text("Space Comments")
+        ],
+      )),
       body: StreamBuilder(
-        stream: provider.channel.stream,
+        stream: provider.channelStream,
         builder: (context, snapshot) {
-
           var response = snapshot.data;
           print(response);
-          if(response != null){
-
+          if (response != null) {
 //          List<Comment> comments = json.decode(response).map((x)=>Comment.fromJson(x))  ;
-          List<Comment> comments =  List<Comment>.from(json.decode(response).map((x)=>Comment.fromJson(x)))  ;
+            List<Comment> comments = List<Comment>.from(
+                json.decode(response).map((x) => Comment.fromJson(x)));
 
-          return  Card(
-              child: ListView.builder(
-                  itemCount: comments.length,
-                  itemBuilder: (context, index) {
-                    return PostItem(comments[index]);
-                  }),
+            return Card(
+              child: Scrollbar(
+                child: ListView.builder(
+
+                    itemCount: comments.length,
+                    itemBuilder: (context, index) {
+                      return PostItem(comments[index]);
+                    }),
+              ),
             );
-          }
-          else{
+          } else {
             return Container();
           }
-
-
-
-
         },
       ),
       bottomNavigationBar: BottomAppBar(
