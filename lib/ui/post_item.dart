@@ -1,9 +1,10 @@
+import 'package:discussion_page/model/comment.dart';
 import 'package:flutter/material.dart';
 
 class PostItem extends StatelessWidget {
-  int index = 0;
+Comment comment;
 
-  PostItem(this.index);
+  PostItem(this.comment);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class PostItem extends StatelessWidget {
       children: <Widget>[
         Row(
           children: <Widget>[
-            Text("+100"),
+            Text(comment.state.toString()),
             IconButton(
               icon: Icon(Icons.arrow_upward),
               onPressed: () {},
@@ -23,16 +24,16 @@ class PostItem extends StatelessWidget {
               icon: Icon(Icons.arrow_downward),
               onPressed: () {},
             ),
-            Text("Igor"),
-            Text("20.02.2020")
+            Text(comment.authorName),
+            Text(comment.creationTime)
           ],
         ),
         Text(
-            "laurum larem lorim laurum larem lorim laurum larem lorim laurum larem lorim"),
+            comment.text),
         Row(
           children: <Widget>[
             FlatButton(
-              child: Text("Коментувати"),
+              child: Text("Сomment"),
               onPressed: () {},
             ),
             IconButton(
@@ -41,9 +42,9 @@ class PostItem extends StatelessWidget {
             ),
           ],
         ),
-        if (index == 0)
-          Padding(padding: const EdgeInsets.only(left: 40),
-              child: PostItem(1))
+//        if (index == 0)
+//          Padding(padding: const EdgeInsets.only(left: 40),
+//              child: PostItem(1))
 
       ],
     );

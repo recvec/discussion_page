@@ -36,18 +36,45 @@ class DiscussionPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Space comments 5"),
       ),
-      body: Card(
-        child: PostItem(0),
+      body: StreamBuilder(
+        stream: provider.channel.stream,
+        builder: (context, snapshot) {
+
+          var response = snapshot.data;
+          print(response);
+          if(response != null){
+
+//          List<Comment> comments = json.decode(response).map((x)=>Comment.fromJson(x))  ;
+          List<Comment> comments =  List<Comment>.from(json.decode(response).map((x)=>Comment.fromJson(x)))  ;
+
+          return  Card(
+              child: ListView.builder(
+                  itemCount: comments.length,
+                  itemBuilder: (context, index) {
+                    return PostItem(comments[index]);
+                  }),
+            );
+          }
+          else{
+            return Container();
+          }
+
+
+
+
+        },
       ),
       bottomNavigationBar: BottomAppBar(
         child: Text("2020"),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          provider.channel.sink.add(json.encode(Comment(id: Random().nextInt(53333).toString(),
-              authorName: Random().nextBool().toString(),
-              creationTime: Random().nextInt(99999).toString(),
-              text: "Loreum lorum lorium ${Random().nextInt(555)}").toJson()));
+          provider.channel.sink.add(json.encode(Comment(
+                  id: Random().nextInt(53333).toString(),
+                  authorName: Random().nextBool().toString(),
+                  creationTime: Random().nextInt(99999).toString(),
+                  text: "Loreum lorum lorium ${Random().nextInt(555)}")
+              .toJson()));
           print("Sended");
 //          showModalBottomSheet(
 //              context: context,
@@ -96,7 +123,4 @@ class DiscussionPage extends StatelessWidget {
       ),
     );
   }
-
-
-
 }
